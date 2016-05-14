@@ -28,11 +28,52 @@ If you are using one of the MapR pre-supplied VMs, you may need to install ```py
 * As root, run:
 ```yum install zlib-devel```
 ```yum install openssl-devel```
-* [Follow the steps outlined here](http://www.shayanderson.com/linux/install-python-3-on-centos-6-server.htm).  You will need to follow all these steps, including installing the "Development tools" group which takes a few minutes.  At the end of these steps you should be able to run ```python3 --version```
+```yum install git```
+
+On the MapR sandbox, you can install the python 3.3 version from the CentOS 6 Software Collections as follows:
+
+```
+yum install centos-release-scl
+yum install python33
+```
+
+Enable python33 for your current shell session and install pip and pandas:
+
+```
+scl enable python33 bash
+easy_install-3.3 pip
+pip install pandas
+```
+
+### Install matplotlob
+
+```
+yum -y install libpng-devel freetype-devel
+pip install matplotlib
+```
+
+### Install Apache Maven
+
+The python-bindings repo requires some java dependencies to build, and so it needs Maven.
+
+You can also install Maven from SCL:
+
+```
+yum install maven30
+```
 
 ### Install the MapR-DB Python Package
 
-To use Python with MapR-DB (as this example does), you will need the package [python-bindings](https://github.com/mapr-demos/python-bindings) installed.  You can install this by running ```pip3 install maprdb```.  
+To use Python with MapR-DB (as this example does), you will need the package [python-bindings](https://github.com/mapr-demos/python-bindings) installed.
+
+To install it, clone the repo and build:
+
+```
+scl enable maven30 bash
+git clone https://github.com/mapr-demos/python-bindings.git
+cd python-bindings
+python setup.py install
+```
 
 ### Edit Variables and Prepare Files
 

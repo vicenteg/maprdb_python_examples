@@ -1,17 +1,18 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import json
 import sys
+import gzip
 import maprdb
 
 # the subset of the data we are loading -- actual will be min(DATA_SIZE, table size)
 DATA_SIZE = 10000
 
 # set this to the input json file for sensors
-DATA_SENSORS_PATH = "/home/mapr/maprdb_python_examples/ws.json"
+DATA_SENSORS_PATH = "ws.json.gz"
 
 # set this to the input json file for maintenance
-DATA_MAINT_PATH = "/home/mapr/maprdb_python_examples/maint.json"
+DATA_MAINT_PATH = "maint.json.gz"
 
 # set these to the path in HDFS/MapR-FS where the table will live
 TABLE_SENSORS_PATH = "/user/mapr/sdata"
@@ -35,7 +36,7 @@ db = open_db()
 t = open_table(db, TABLE_SENSORS_PATH)
 
 # first load the sensor data set
-with open(DATA_SENSORS_PATH) as json_data:
+with gzip.open(DATA_SENSORS_PATH, mode='rt') as json_data:
     d = json.load(json_data)
     print("total points in file: %d" % len(d))
     print("total points to load: %d" % DATA_SIZE)
@@ -62,7 +63,7 @@ i = 0
 # now load the maint. history data set
 t = open_table(db, TABLE_MAINT_PATH)
 print("opening JSON file %s" % DATA_MAINT_PATH)
-with open(DATA_MAINT_PATH) as json_data:
+with gzip.open(DATA_MAINT_PATH, mode='rt') as json_data:
     d = json.load(json_data)
     print("total points in file: %d" % len(d))
     print("total points to load: %d" % DATA_SIZE)
